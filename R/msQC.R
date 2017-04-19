@@ -18,6 +18,8 @@
 ##' @param tolu Units can be selected from: ppm, Daltons(also da or Da).
 ##' @param itol Error window for MS/MS fragment ion mass values.
 ##' @param itolu  Units can be selected from: Daltons(also da or Da)
+##' @param refine Refine search for X!Tandem, default is TRUE.
+##' @param ntt Semi-tryptic, 1; fully-tryptic, 2.
 ##' @param threshold  FDR value for PSM
 ##' @param cpu  Max number of cpu used
 ##' @param xmx  JAVA -Xmx
@@ -77,7 +79,7 @@ msQCpipe <- function(spectralist=NULL, fasta="", outdir="./", mode="",
                      miss=2, enzyme=1,
                      varmod=NULL, fixmod=NULL, ##modification
                      tol=10, tolu="ppm", itol=0.6, itolu="Daltons", ##mass error
-                     threshold=0.01, cpu=0, xmx=2,
+                     threshold=0.01, cpu=0, xmx=2,refine=TRUE,ntt=1,
                      ...) {    
   ## check if the input parameters are valid!
   if (!file.exists(spectralist)) {
@@ -105,8 +107,11 @@ msQCpipe <- function(spectralist=NULL, fasta="", outdir="./", mode="",
   res$input_parameter$tolu=tolu
   res$input_parameter$itol=itol
   res$input_parameter$itolu=itolu
+  res$input_parameter$refine=refine
+  res$input_parameter$ntt=ntt
   res$input_parameter$threshold=threshold
   res$input_parameter$date=date()
+  
   
   ## Create the protein result file directory
   res$input_parameter$result.dir <- paste(res$input_parameter$outdir,"/result",
@@ -173,7 +178,7 @@ msQCpipe <- function(spectralist=NULL, fasta="", outdir="./", mode="",
                   cpu=cpu,
                   enzyme=enzyme,
                   xmx=xmx,                                  
-                  miss=miss))
+                  miss=miss,refine = refine,ntt = ntt))
     
   }
   
@@ -436,10 +441,12 @@ combineRun <- function(pepFiles,fasta,outPathFile,outdir,prefix){
 ##' @param itol   Error window for MS/MS fragment ion mass values.
 ##' @param itolu  Units can be selected from: Daltons
 ##' @param miss Max miss clevage
+##' @param refine Refine search, default is TRUE
+##' @param ntt Default is 1
 ##' @author Bo Wen \email{wenbo@@genomics.cn}
 ##' @return a file path
 runTandem=function(spectra="",fasta="",outdir="./",outprefix="",cpu=1,enzyme=1,
-                    xmx=2,varmod=NULL,fixmod=NULL,
+                    xmx=2,varmod=NULL,fixmod=NULL,refine=TRUE,ntt=1,
                    tol=10,tolu="ppm",itol=0.6,itolu="Daltons",miss=1){
   ##
   cat(format(Sys.time()),"\n")
@@ -479,6 +486,7 @@ runTandem=function(spectra="",fasta="",outdir="./",outprefix="",cpu=1,enzyme=1,
   param <- setParamValue(param, 'output', 'parameters',value="yes")
   param <- setParamValue(param, 'output', 'results',value="all")
   param <- setParamValue(param, 'output', 'path hashing',value="no")
+  
   param <- setParamValue(param,"spectrum","fragment monoisotopic mass error",
                          value=itol)
   ##The value for this parameter may be 'Daltons' or 'ppm': all other values are
@@ -506,6 +514,14 @@ runTandem=function(spectra="",fasta="",outdir="./",outprefix="",cpu=1,enzyme=1,
   param <- setParamValue(param,"residue","potential modification mass",
                          value=varmods)
   param <- setParamValue(param,"residue","modification mass",value=fixmods)
+  
+  param <- setParamValue(param,"refine",value=ifelse(refine,"yes","no"))
+  
+  if(refine){
+    param <- setParamValue(param,"refine","unanticipated cleavage",value=ifelse(ntt==2,"no","yes"))
+  }
+   
+  
   
   result.path <- tandem(param)
   

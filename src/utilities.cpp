@@ -55,8 +55,8 @@ RcppExport SEXP ChargeCount_Cpp(SEXP mgf_)
 	{
 		return wrap(NA_REAL);
 	}
-	std::string line;  //每行字符串临时变量
-	getline(in, line);//获取一行
+	std::string line;  
+	getline(in, line);
     int total=0;
 	int ms2flag=0;
 	while(in)
@@ -131,10 +131,10 @@ RcppExport SEXP LableRatio_Cpp(SEXP mgf_, SEXP iClass_, SEXP delta_)
 
 
 
-	std::string line;  //每行字符串临时变量
-	getline(in, line);//获取一行
+	std::string line;  
+	getline(in, line);
     int total=0;
-	int ms2flag=0;
+	//int ms2flag=0;
 	std::string sep=" ";
 
 	double I113=113.1;
@@ -184,7 +184,7 @@ RcppExport SEXP LableRatio_Cpp(SEXP mgf_, SEXP iClass_, SEXP delta_)
 
 		}else if(beginStr=="BEG"){
             total++;
-			ms2flag=1;
+			//ms2flag=1;
 		}else if(beginStr=="END"){
 			
 		
@@ -193,7 +193,7 @@ RcppExport SEXP LableRatio_Cpp(SEXP mgf_, SEXP iClass_, SEXP delta_)
 
 		//if(endfound!=std::string::npos){
 		//if(endStr=="END IONS"){
-			ms2flag=0;
+			//ms2flag=0;
 			if(iClass==1){
 				//iTRAQ-8plex
 				std::string reporterMZ = "";

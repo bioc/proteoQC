@@ -22,7 +22,7 @@ BiocStyle::latex()
 
 \maketitle
 
-<<env, echo=FALSE>>=
+<<env, echo=FALSE,warning=FALSE>>=
 suppressPackageStartupMessages(library("proteoQC"))
 suppressPackageStartupMessages(library("R.utils"))
 @
@@ -51,7 +51,7 @@ repository (\url{http://www.proteomexchange.org/}). We will use the
 \Biocpkg{rpx} package to accessed and downloaded the data.
 
 
-<<showdata, eval=TRUE>>=
+<<showdata, eval=TRUE,warning=FALSE,error=FALSE>>=
 library("rpx")
 px <- PXDataset("PXD000864")
 px

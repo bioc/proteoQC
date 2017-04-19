@@ -34,15 +34,15 @@ reportHTML <- function(res) {
     dir.create(res$input_parameter$report.dir,recursive=TRUE,showWarnings=FALSE)
     report<-newCustomReport("MSMS Report")    
     report<-setReportTitle(report,
-                           "Quality Control Analysis of Proteomics MS/MS Data")
+                           "Quality Control Analysis of MS/MS Proteomics Data")
 
     
     ##The first section
     s1 <-newSection("Introduction")
     s1 <-addTo(s1,newParagraph(
-        "Data quality is a concern in proteomics experimental science. 
+        "Data quality is a concern in proteomics experiments. 
         In this report, we assess the intrinsic features of the data set 
-        at different levels."))
+        at multiple levels."))
    
     ##The second section: method and experiment design
     ##Firstly, there is a table to show the experiment design, 
@@ -104,10 +104,10 @@ reportHTML <- function(res) {
     searchParameterTable <- newTable(searchParameter,
                                      "The database search parameters")
     s2_sub2 <- addTo(s2_sub2,newParagraph("X!Tandem was used for analyzing the data.",
-                    " Parameters used in X!Tandem search were shown in ",
+                    " Parameters used in the X!Tandem search are shown in ",
                     asReference(element=searchParameterTable),
-                      ". Protein identifications are inferred from peptide identifications," ,
-                      " each protein identified having at least one associated unique peptide sequence identified at q-value equal or less than 0.01 (equivalent to a 1% FDR).", 
+                      ". Protein identifications were inferred from peptide identifications," ,
+                      " and each identified protein had at least one associated unique peptide sequence identified at q-value equal or less than 0.01 (equivalent to a 1% FDR).", 
                       " The Occam&apos;s razor approach (Nesvizhskii, et al., 2003) was applied to deal with degenerate peptides by finding a minimum subset of proteins that covered all of the identified peptides."))
     s2_sub2<-addTo(s2_sub2,searchParameterTable)
     s2 <- addTo(s2, s2_sub1,s2_sub2)
@@ -129,7 +129,7 @@ reportHTML <- function(res) {
                                        .RES.FRACTION.COLS["PROTEIN"])]
     psmRatio <- sprintf("%.3f%%",100.0*dview$spectrum/dview$spectrum_total)
     dview$spectrum <- paste(dview$spectrum,"(",psmRatio,")",sep="")
-    s3_sub1<-addTo(s3_sub1,newTable(dview,"Protein identification result for each fraction"))
+    s3_sub1<-addTo(s3_sub1,newTable(dview,"Protein identification results for each fraction"))
     ##The result of each replicate experiment
     if(res$input_parameter$maxFraction>=2){
         dview <- res$res_techRep_level[,c(.INPUT.COLS["SAMPLE"],
@@ -200,7 +200,7 @@ reportHTML <- function(res) {
         standards.")),
                 newParagraph("We added the ",
                              asLink("http://www.thegpm.org/crap/"," cRAP"),
-                             " database."))
+                             " database in database searching."))
     
     
     if (!is.null(cntStat(res))) {

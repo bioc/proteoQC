@@ -9,3 +9,8 @@ index	modstring	name
 8	144.102063@K	iTRAQ4plex (K)
 9	144.102063@[	iTRAQ4plex (N-term)
 10	144.102063@Y	iTRAQ4plex (Y)
+11	229.162932@K	TMT10plex (K)
+12	229.162932@[	TMT10plex (N-term)
+13	79.966331@Y	PhosY
+14	79.966331@S	PhosS
+15	79.966331@T	PhosT
